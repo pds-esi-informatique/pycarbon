@@ -1,4 +1,6 @@
 import datetime
+import calendar
+
 class PyCarbon():
     def __init__(self):
         self.datetime_today = None
@@ -22,6 +24,27 @@ class PyCarbon():
         return self
     def sub_day(self):
         self.datetime_today = self.datetime_today - datetime.timedelta(days=1)
+        return self
+    def _calculate_month(self,months:int):
+        """
+        https://stackoverflow.com/questions/4130922/how-to-increment-datetime-by-custom-months-in-python-without-using-library/23506665
+        """
+        month = self.datetime_today.month - 1 + months
+        year = self.datetime_today.year + month // 12
+        month = month % 12 + 1
+        day = min(self.datetime_today.day, calendar.monthrange(year, month)[1])
+        return self.datetime_today.replace(year=year, month=month, day=day)
+    def add_month(self):
+        self.datetime_today = self._calculate_month(1)
+        return self
+    def add_months(self,months:int):
+        self.datetime_today = self._calculate_month(months)
+        return self
+    def sub_month(self):
+        self.datetime_today = self._calculate_month(1)
+        return self
+    def sub_months(self,months:int):
+        self.datetime_today = self._calculate_month(months)
         return self
     def first_of_month(self):
         self.datetime_today = self.datetime_today.replace(day=1)
