@@ -24,10 +24,10 @@ class PyCarbon():
         self.datetime_today = self.datetime_today - datetime.timedelta(days=1)
         return self
     def first_of_month(self):
-        self.datetime_today.replace(day=1)
+        self.datetime_today = self.datetime_today.replace(day=1)
         return self
     def start_of_month(self):
-        self.datetime_today.replace(day=1,hour=0,minute=0,second=0)
+        self.datetime_today = self.datetime_today.replace(day=1,hour=0,minute=0,second=0)
         return self
     def to_date_time_string(self):
         return self.datetime_today.strftime("%Y-%m-%d, %H:%M:%S")
