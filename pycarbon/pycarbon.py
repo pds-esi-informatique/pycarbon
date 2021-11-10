@@ -7,19 +7,19 @@ class PyCarbon():
             return self.datetime_today.strftime("%Y-%m-%d, %H:%M:%S")
     def now(self):
         self.datetime_today = datetime.datetime.today()
-        return self.datetime_today
+        return self
     def add_days(self,days:int):
         self.datetime_today = self.datetime_today + datetime.timedelta(days=days)
-        return self.datetime_today
+        return self
     def add_day(self):
         self.datetime_today = self.datetime_today + datetime.timedelta(days=1)
-        return self.datetime_today
+        return self
     def sub_days(self,days:int):
         self.datetime_today = self.datetime_today - datetime.timedelta(days=days)
-        return self.datetime_today
+        return self
     def sub_day(self):
         self.datetime_today = self.datetime_today - datetime.timedelta(days=1)
-        return self.datetime_today
+        return self
     def to_date_time_string(self):
         return self.datetime_today.strftime("%Y-%m-%d, %H:%M:%S")
     def to_date_string(self):
