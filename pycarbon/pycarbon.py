@@ -5,6 +5,10 @@ class PyCarbon():
     def __str__(self):
         if self.datetime_today and type(self.datetime_today) is datetime.datetime:
             return self.datetime_today.strftime("%Y-%m-%d, %H:%M:%S")
+    def __repr__(self):
+        if self.datetime_today and type(self.datetime_today) is datetime.datetime:
+            return self.datetime_today.strftime("%Y-%m-%d, %H:%M:%S")
+
     def now(self):
         self.datetime_today = datetime.datetime.today()
         return self
