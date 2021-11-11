@@ -8,5 +8,6 @@ setup(
     license='MIT',
     author='Pascal de Sélys',
     author_email='pds@esi-informatique.com',
-    description='Copy of the excellent carbon library in php for python'
+    description='Copy of the excellent carbon library in php for python',
+    install_requires=['pytz']
 )
