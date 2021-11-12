@@ -1,0 +1,369 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pycarbon &#8212; Py Carbon 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for pycarbon</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">calendar</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">pytz</span>
+
+<span class="n">MONTHS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;january&quot;</span><span class="p">:</span> <span class="s2">&quot;01&quot;</span><span class="p">,</span> <span class="s2">&quot;february&quot;</span><span class="p">:</span> <span class="s2">&quot;02&quot;</span><span class="p">,</span> <span class="s2">&quot;march&quot;</span><span class="p">:</span> <span class="s2">&quot;03&quot;</span><span class="p">,</span> <span class="s2">&quot;april&quot;</span><span class="p">:</span> <span class="s2">&quot;04&quot;</span><span class="p">,</span> <span class="s2">&quot;may&quot;</span><span class="p">:</span> <span class="s2">&quot;05&quot;</span><span class="p">,</span> <span class="s2">&quot;june&quot;</span><span class="p">:</span> <span class="s2">&quot;06&quot;</span><span class="p">,</span> <span class="s2">&quot;july&quot;</span><span class="p">:</span> <span class="s2">&quot;07&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;august&quot;</span><span class="p">:</span> <span class="s2">&quot;08&quot;</span><span class="p">,</span> <span class="s2">&quot;september&quot;</span><span class="p">:</span> <span class="s2">&quot;09&quot;</span><span class="p">,</span> <span class="s2">&quot;october&quot;</span><span class="p">:</span> <span class="s2">&quot;10&quot;</span><span class="p">,</span> <span class="s2">&quot;november&quot;</span><span class="p">:</span> <span class="s2">&quot;11&quot;</span><span class="p">,</span> <span class="s2">&quot;december&quot;</span><span class="p">:</span> <span class="s2">&quot;12&quot;</span><span class="p">}</span>
+
+
+<div class="viewcode-block" id="PyCarbon"><a class="viewcode-back" href="../index.html#pycarbon.PyCarbon">[docs]</a><span class="k">class</span> <span class="nc">PyCarbon</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">date</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+            <span class="n">remove_space_in_date</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s1">&#39;firstdayof&#39;</span> <span class="ow">in</span> <span class="n">remove_space_in_date</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                <span class="n">year</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">isdigit</span><span class="p">,</span> <span class="n">remove_space_in_date</span><span class="p">))</span>
+                <span class="n">month_search</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\d+&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">remove_space_in_date</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;firstdayof&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+                <span class="k">if</span> <span class="n">month_search</span> <span class="ow">in</span> <span class="n">MONTHS</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">day</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">MONTHS</span><span class="p">[</span><span class="n">month_search</span><span class="p">]))</span>
+                <span class="k">if</span> <span class="n">year</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">day</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">year</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">year</span><span class="p">),</span>
+                                                                      <span class="n">month</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">MONTHS</span><span class="p">[</span><span class="n">month_search</span><span class="p">]))</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_date_representation</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_date_representation</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_date_representation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Put the date in a standard format and readable for everyone, add the field if a timezeone has been added</span>
+<span class="sd">        :return: The formatted date</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span> <span class="ow">and</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span><span class="p">)</span> <span class="ow">is</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span><span class="o">.</span><span class="n">tzname</span><span class="p">():</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">, %H:%M:%S &quot;</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span><span class="o">.</span><span class="n">tzinfo</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">, %H:%M:%S&quot;</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_positive_parameter_number</span><span class="p">(</span><span class="n">number</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Allows not to have an error when the person indicates a number always returns a positive</span>
+<span class="sd">        :param number: an integer</span>
+<span class="sd">        :return: positive integer</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="n">number</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_calculate_months</span><span class="p">(</span><span class="n">datetime_today</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">,</span> <span class="n">months</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Allows you to calculate a month based on the existing date</span>
+<span class="sd">        https://stackoverflow.com/questions/4130922/how-to-increment-datetime-by-custom-months-in-python-without-using-library/23506665</span>
+<span class="sd">        :return: The date with the number of months in addition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">month</span> <span class="o">=</span> <span class="n">datetime_today</span><span class="o">.</span><span class="n">month</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">months</span>
+        <span class="n">year</span> <span class="o">=</span> <span class="n">datetime_today</span><span class="o">.</span><span class="n">year</span> <span class="o">+</span> <span class="n">month</span> <span class="o">//</span> <span class="mi">12</span>
+        <span class="n">month</span> <span class="o">=</span> <span class="n">month</span> <span class="o">%</span> <span class="mi">12</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">day</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">datetime_today</span><span class="o">.</span><span class="n">day</span><span class="p">,</span> <span class="n">calendar</span><span class="o">.</span><span class="n">monthrange</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">datetime_today</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="n">day</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_calculate_days</span><span class="p">(</span><span class="n">datetime_today</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">,</span> <span class="n">days</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates the number of days added by the given date</span>
+<span class="sd">        :param datetime_today: A date</span>
+<span class="sd">        :param days: The number of days</span>
+<span class="sd">        :return: The date with the number of days calculated</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">datetime_today</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">days</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_set_timezone</span><span class="p">(</span><span class="n">datetime_today</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">,</span> <span class="n">timezone</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Allows you to add a timezone to a date</span>
+<span class="sd">        :param datetime_today: A date</span>
+<span class="sd">        :param timezone: The timezone to add</span>
+<span class="sd">        :return: The date with the timezone in addition</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">timezone</span> <span class="o">=</span> <span class="n">pytz</span><span class="o">.</span><span class="n">timezone</span><span class="p">(</span><span class="n">timezone</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">timezone</span><span class="o">.</span><span class="n">localize</span><span class="p">(</span><span class="n">datetime_today</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyCarbon.now"><a class="viewcode-back" href="../index.html#pycarbon.PyCarbon.now">[docs]</a>    <span class="k">def</span> <span class="nf">now</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timezone</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Today&#39;s date and time</span>
+<span class="sd">        :param timezone: If you need to set a timezone</span>
+<span class="sd">        :return: Returns the object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">timezone</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_set_timezone</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span><span class="p">,</span> <span class="n">timezone</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="PyCarbon.today"><a class="viewcode-back" href="../index.html#pycarbon.PyCarbon.today">[docs]</a>    <span class="k">def</span> <span class="nf">today</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timezone</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Today&#39;s date and first time</span>
+<span class="sd">        :param timezone: If you need to set a timezone</span>
+<span class="sd">        :return: Returns the object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">second</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">timezone</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_set_timezone</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span><span class="p">,</span> <span class="n">timezone</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="PyCarbon.yesterday"><a class="viewcode-back" href="../index.html#pycarbon.PyCarbon.yesterday">[docs]</a>    <span class="k">def</span> <span class="nf">yesterday</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timezone</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The previous day&#39;s date compared to today&#39;s date</span>
+<span class="sd">        :param timezone: If you need to set a timezone</span>
+<span class="sd">        :return: Returns the object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">second</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">timezone</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_set_timezone</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span><span class="p">,</span> <span class="n">timezone</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="PyCarbon.tomorrow"><a class="viewcode-back" href="../index.html#pycarbon.PyCarbon.tomorrow">[docs]</a>    <span class="k">def</span> <span class="nf">tomorrow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timezone</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Next day&#39;s date compared to today&#39;s date</span>
+<span class="sd">        :param timezone: If you need to set a timezone</span>
+<span class="sd">        :return: Returns the object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">second</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">timezone</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_set_timezone</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span><span class="p">,</span> <span class="n">timezone</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="PyCarbon.add_day"><a class="viewcode-back" href="../index.html#pycarbon.PyCarbon.add_day">[docs]</a>    <span class="k">def</span> <span class="nf">add_day</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a day to the date</span>
+<span class="sd">        :return: Returns the object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_days</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="PyCarbon.add_days"><a class="viewcode-back" href="../index.html#pycarbon.PyCarbon.add_days">[docs]</a>    <span class="k">def</span> <span class="nf">add_days</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">days</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add the number of days to the date</span>
+<span class="sd">        :param days: Number of days</span>
+<span class="sd">        :return: Returns the object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">days</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_positive_parameter_number</span><span class="p">(</span><span class="n">days</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_days</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span><span class="p">,</span> <span class="n">days</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="PyCarbon.sub_day"><a class="viewcode-back" href="../index.html#pycarbon.PyCarbon.sub_day">[docs]</a>    <span class="k">def</span> <span class="nf">sub_day</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove a day from the date</span>
+<span class="sd">        :return: Returns the object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_days</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="PyCarbon.sub_days"><a class="viewcode-back" href="../index.html#pycarbon.PyCarbon.sub_days">[docs]</a>    <span class="k">def</span> <span class="nf">sub_days</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">days</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove the number of days from the date</span>
+<span class="sd">        :param days: Number of days</span>
+<span class="sd">        :return: Returns the object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">days</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_positive_parameter_number</span><span class="p">(</span><span class="n">days</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_days</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span><span class="p">,</span> <span class="o">-</span><span class="n">days</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="PyCarbon.add_month"><a class="viewcode-back" href="../index.html#pycarbon.PyCarbon.add_month">[docs]</a>    <span class="k">def</span> <span class="nf">add_month</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a month to the date</span>
+<span class="sd">        :return: Returns the object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_months</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="PyCarbon.add_months"><a class="viewcode-back" href="../index.html#pycarbon.PyCarbon.add_months">[docs]</a>    <span class="k">def</span> <span class="nf">add_months</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">months</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add months to the date</span>
+<span class="sd">        :param months:  Number of months</span>
+<span class="sd">        :return: Returns the object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">months</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_positive_parameter_number</span><span class="p">(</span><span class="n">months</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_months</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span><span class="p">,</span> <span class="n">months</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="PyCarbon.sub_month"><a class="viewcode-back" href="../index.html#pycarbon.PyCarbon.sub_month">[docs]</a>    <span class="k">def</span> <span class="nf">sub_month</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove one month from the date</span>
+<span class="sd">        :return: Returns the object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_months</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="PyCarbon.sub_months"><a class="viewcode-back" href="../index.html#pycarbon.PyCarbon.sub_months">[docs]</a>    <span class="k">def</span> <span class="nf">sub_months</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">months</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove months from the date</span>
+<span class="sd">        :param months: Number of months</span>
+<span class="sd">        :return: Returns the object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">months</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_positive_parameter_number</span><span class="p">(</span><span class="n">months</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_months</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span><span class="p">,</span> <span class="o">-</span><span class="n">months</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="PyCarbon.first_of_month"><a class="viewcode-back" href="../index.html#pycarbon.PyCarbon.first_of_month">[docs]</a>    <span class="k">def</span> <span class="nf">first_of_month</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the first day of the month to the date</span>
+<span class="sd">        :return: Returns the object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">day</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="PyCarbon.start_of_month"><a class="viewcode-back" href="../index.html#pycarbon.PyCarbon.start_of_month">[docs]</a>    <span class="k">def</span> <span class="nf">start_of_month</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the first day of the month to the first hour</span>
+<span class="sd">        :return: Returns the object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">day</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">hour</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">second</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">to_date_time_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the date and time in standard string format from the date</span>
+<span class="sd">        :return: the date and time in standard string format</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">, %H:%M:%S&quot;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">to_date_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        return the date in standard string format from the date</span>
+<span class="sd">        :return: the date in standard string format</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">to_atom_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the date time with the atomic time in iso 8601 format from the date</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span><span class="o">.</span><span class="n">astimezone</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">to_iso8601_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        returns date and time in iso format 8601 from the date</span>
+<span class="sd">        :return:  date and time in iso format 8601</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span><span class="o">.</span><span class="n">astimezone</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">microsecond</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">tz_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the timezone name from the date</span>
+<span class="sd">        :return: timezone name</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span><span class="o">.</span><span class="n">tzname</span><span class="p">()</span>
+
+<div class="viewcode-block" id="PyCarbon.utc_offset"><a class="viewcode-back" href="../index.html#pycarbon.PyCarbon.utc_offset">[docs]</a>    <span class="k">def</span> <span class="nf">utc_offset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns utc offset from the date</span>
+<span class="sd">        :return: utc offset</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO create set utc offset</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span><span class="o">.</span><span class="n">utcoffset</span><span class="p">()</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span> <span class="o">/</span> <span class="mi">60</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">tz_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the time zone info of the date</span>
+<span class="sd">        :return: timezone info</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span><span class="o">.</span><span class="n">tzinfo</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">datetime_today</span><span class="o">.</span><span class="n">tzinfo</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Py Carbon</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, de Selys Pascal.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

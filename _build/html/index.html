@@ -31,8 +31,168 @@
 
           <div class="body" role="main">
             
-  <section id="welcome-to-py-carbon-s-documentation">
-<h1>Welcome to Py Carbon’s documentation!<a class="headerlink" href="#welcome-to-py-carbon-s-documentation" title="Permalink to this headline">¶</a></h1>
+  <section id="module-pycarbon">
+<span id="welcome-to-py-carbon-s-documentation"></span><h1>Welcome to Py Carbon’s documentation!<a class="headerlink" href="#module-pycarbon" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="pycarbon.PyCarbon">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pycarbon.</span></span><span class="sig-name descname"><span class="pre">PyCarbon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycarbon.html#PyCarbon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pycarbon.PyCarbon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pycarbon.PyCarbon.add_day">
+<span class="sig-name descname"><span class="pre">add_day</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycarbon.html#PyCarbon.add_day"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pycarbon.PyCarbon.add_day" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a day to the date
+:return: Returns the object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pycarbon.PyCarbon.add_days">
+<span class="sig-name descname"><span class="pre">add_days</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">days</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycarbon.html#PyCarbon.add_days"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pycarbon.PyCarbon.add_days" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add the number of days to the date
+:param days: Number of days
+:return: Returns the object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pycarbon.PyCarbon.add_month">
+<span class="sig-name descname"><span class="pre">add_month</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycarbon.html#PyCarbon.add_month"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pycarbon.PyCarbon.add_month" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a month to the date
+:return: Returns the object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pycarbon.PyCarbon.add_months">
+<span class="sig-name descname"><span class="pre">add_months</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">months</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycarbon.html#PyCarbon.add_months"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pycarbon.PyCarbon.add_months" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add months to the date
+:param months:  Number of months
+:return: Returns the object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pycarbon.PyCarbon.first_of_month">
+<span class="sig-name descname"><span class="pre">first_of_month</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycarbon.html#PyCarbon.first_of_month"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pycarbon.PyCarbon.first_of_month" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the first day of the month to the date
+:return: Returns the object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pycarbon.PyCarbon.now">
+<span class="sig-name descname"><span class="pre">now</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timezone</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycarbon.html#PyCarbon.now"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pycarbon.PyCarbon.now" title="Permalink to this definition">¶</a></dt>
+<dd><p>Today’s date and time
+:param timezone: If you need to set a timezone
+:return: Returns the object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pycarbon.PyCarbon.start_of_month">
+<span class="sig-name descname"><span class="pre">start_of_month</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycarbon.html#PyCarbon.start_of_month"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pycarbon.PyCarbon.start_of_month" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the first day of the month to the first hour
+:return: Returns the object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pycarbon.PyCarbon.sub_day">
+<span class="sig-name descname"><span class="pre">sub_day</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycarbon.html#PyCarbon.sub_day"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pycarbon.PyCarbon.sub_day" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a day from the date
+:return: Returns the object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pycarbon.PyCarbon.sub_days">
+<span class="sig-name descname"><span class="pre">sub_days</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">days</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycarbon.html#PyCarbon.sub_days"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pycarbon.PyCarbon.sub_days" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the number of days from the date
+:param days: Number of days
+:return: Returns the object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pycarbon.PyCarbon.sub_month">
+<span class="sig-name descname"><span class="pre">sub_month</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycarbon.html#PyCarbon.sub_month"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pycarbon.PyCarbon.sub_month" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove one month from the date
+:return: Returns the object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pycarbon.PyCarbon.sub_months">
+<span class="sig-name descname"><span class="pre">sub_months</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">months</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycarbon.html#PyCarbon.sub_months"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pycarbon.PyCarbon.sub_months" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove months from the date
+:param months: Number of months
+:return: Returns the object</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pycarbon.PyCarbon.to_atom_string">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">to_atom_string</span></span><a class="headerlink" href="#pycarbon.PyCarbon.to_atom_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the date time with the atomic time in iso 8601 format from the date</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pycarbon.PyCarbon.to_date_string">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">to_date_string</span></span><a class="headerlink" href="#pycarbon.PyCarbon.to_date_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>return the date in standard string format from the date
+:return: the date in standard string format</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pycarbon.PyCarbon.to_date_time_string">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">to_date_time_string</span></span><a class="headerlink" href="#pycarbon.PyCarbon.to_date_time_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the date and time in standard string format from the date
+:return: the date and time in standard string format</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pycarbon.PyCarbon.to_iso8601_string">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">to_iso8601_string</span></span><a class="headerlink" href="#pycarbon.PyCarbon.to_iso8601_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns date and time in iso format 8601 from the date
+:return:  date and time in iso format 8601</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pycarbon.PyCarbon.today">
+<span class="sig-name descname"><span class="pre">today</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timezone</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycarbon.html#PyCarbon.today"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pycarbon.PyCarbon.today" title="Permalink to this definition">¶</a></dt>
+<dd><p>Today’s date and first time
+:param timezone: If you need to set a timezone
+:return: Returns the object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pycarbon.PyCarbon.tomorrow">
+<span class="sig-name descname"><span class="pre">tomorrow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timezone</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycarbon.html#PyCarbon.tomorrow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pycarbon.PyCarbon.tomorrow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Next day’s date compared to today’s date
+:param timezone: If you need to set a timezone
+:return: Returns the object</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pycarbon.PyCarbon.tz_info">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tz_info</span></span><a class="headerlink" href="#pycarbon.PyCarbon.tz_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the time zone info of the date
+:return: timezone info</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pycarbon.PyCarbon.tz_name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tz_name</span></span><a class="headerlink" href="#pycarbon.PyCarbon.tz_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the timezone name from the date
+:return: timezone name</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pycarbon.PyCarbon.utc_offset">
+<span class="sig-name descname"><span class="pre">utc_offset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycarbon.html#PyCarbon.utc_offset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pycarbon.PyCarbon.utc_offset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns utc offset from the date
+:return: utc offset</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pycarbon.PyCarbon.yesterday">
+<span class="sig-name descname"><span class="pre">yesterday</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timezone</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pycarbon.html#PyCarbon.yesterday"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pycarbon.PyCarbon.yesterday" title="Permalink to this definition">¶</a></dt>
+<dd><p>The previous day’s date compared to today’s date
+:param timezone: If you need to set a timezone
+:return: Returns the object</p>
+</dd></dl>
+
+</dd></dl>
+
 <div class="toctree-wrapper compound">
 </div>
 </section>
@@ -93,7 +253,7 @@
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2021, de elys Pascal.
+      &copy;2021, de Selys Pascal.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.0</a>
