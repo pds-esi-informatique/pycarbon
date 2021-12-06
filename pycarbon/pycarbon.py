@@ -79,7 +79,7 @@ class PyCarbon:
         :param days: The number of days
         :return: The date with the number of days calculated
         """
-        return datetime_today + datetime.timedelta(days=hours)
+        return datetime_today + datetime.timedelta(hours=hours)
     @staticmethod
     def _set_timezone(datetime_today: datetime.datetime, timezone: str):
         """
@@ -139,6 +139,7 @@ class PyCarbon:
         :return: Returns the object
         """
         self.datetime_today = self._calculate_hours(self.datetime_today,1)
+        return self
     def add_hours(self, hours: int):
         """
         Add a hour to the date
