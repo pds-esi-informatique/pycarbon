@@ -90,7 +90,6 @@ class PyCarbon:
         """
         timezone = pytz.timezone(timezone)
         return timezone.localize(datetime_today)
-
     def now(self, timezone: str = None):
         """
         Today's date and time
@@ -133,6 +132,7 @@ class PyCarbon:
         if timezone:
             self.datetime_today = self._set_timezone(self.datetime_today, timezone)
         return self
+
     def add_hour(self):
         """
         Add a hour to the date
@@ -147,6 +147,22 @@ class PyCarbon:
         """
         self.datetime_today = self._calculate_hours(self.datetime_today,hours)
         return self
+    def sub_hour(self):
+        """
+               Add a hour to the date
+               :return: Returns the object
+               """
+        self.datetime_today = self._calculate_hours(self.datetime_today, -1)
+        return self
+    def sub_hours(self, hours: int):
+        """
+               Add a hour to the date
+               :return: Returns the object
+               """
+        hours = self._positive_parameter_number(hours)
+        self.datetime_today = self._calculate_hours(self.datetime_today, -hours)
+        return self
+
     def add_day(self):
         """
         Add a day to the date
