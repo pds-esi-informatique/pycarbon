@@ -306,3 +306,8 @@ class PyCarbon:
         """
         if self.datetime_today.tzinfo:
             return str(self.datetime_today.tzinfo)
+
+    def diff_in_seconds(self,datetime):
+        difference = (self.datetime_today - datetime)
+        return abs(difference.total_seconds())
+
