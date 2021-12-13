@@ -80,6 +80,16 @@ class PyCarbon:
         :return: The date with the number of days calculated
         """
         return datetime_today + datetime.timedelta(hours=hours)
+
+    @staticmethod
+    def _calculate_seconds(datetime_today: datetime.datetime, seconds: int):
+        """
+        Calculates the number of seconds added by the given date
+        :param datetime_today: A date
+        :param seconds: The number of seconds
+        :return: The date with the number of days calculated
+        """
+        return datetime_today + datetime.timedelta(seconds=seconds)
     @staticmethod
     def _set_timezone(datetime_today: datetime.datetime, timezone: str):
         """
@@ -131,6 +141,35 @@ class PyCarbon:
         self.datetime_today = datetime.datetime.today().replace(hour=0, minute=0, second=0) + datetime.timedelta(days=1)
         if timezone:
             self.datetime_today = self._set_timezone(self.datetime_today, timezone)
+        return self
+    def add_second(self):
+        """
+        Add a hour to the date
+        :return: Returns the object
+        """
+        self.datetime_today = self._calculate_seconds(self.datetime_today,1)
+        return self
+    def add_seconds(self, seconds: int):
+        """
+        Add a hour to the date
+        :return: Returns the object
+        """
+        self.datetime_today = self._calculate_seconds(self.datetime_today,seconds)
+        return self
+    def sub_second(self):
+        """
+               Add a hour to the date
+               :return: Returns the object
+               """
+        self.datetime_today = self._calculate_seconds(self.datetime_today, -1)
+        return self
+    def sub_seconds(self, seconds: int):
+        """
+               Add a hour to the date
+               :return: Returns the object
+               """
+        seconds = self._positive_parameter_number(seconds)
+        self.datetime_today = self._calculate_seconds(self.datetime_today, -seconds)
         return self
 
     def add_hour(self):
