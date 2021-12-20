@@ -99,7 +99,7 @@ class PyCarbon:
         :return: The date with the timezone in addition
         """
         timezone = pytz.timezone(timezone)
-        return timezone.localize(datetime_today)
+        return pytz.utc.localize(datetime_today.utcnow(), is_dst=None).astimezone(timezone)
     def now(self, timezone: str = None):
         """
         Today's date and time
